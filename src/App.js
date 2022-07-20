@@ -3,6 +3,7 @@ import Counter from './Counter';
 import { createStore } from 'redux';
 import { DECREASE, RESET, INCREASE } from './actions';
 import reducer from './reducers';
+import { Provider } from 'react-redux';
 
 // setup initial state
 const defaultState = {
@@ -13,11 +14,12 @@ const defaultState = {
 
 // setup store
 const store = createStore(reducer, defaultState);
-store.dispatch({ type: RESET });
-store.dispatch({ type: DECREASE });
-store.dispatch({ type: INCREASE });
 const App = () => {
-  return <Counter state={store.getState()} />;
+  return (
+    <Provider store={store}>
+      <Counter />;
+    </Provider>
+  );
 };
 
 export default App;
