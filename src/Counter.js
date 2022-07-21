@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { DECREASE, RESET, INCREASE, MODAL_OPEN, MODAL_CLOSE } from './actions';
+import { decrease, increase, reset, modalOpen } from './actions';
 
-function Counter({ name, count, increase, decrease, reset }) {
+function Counter({ name, count, increase, decrease, reset, modalOpen }) {
   return (
     <div className='container'>
       <h1>counter</h1>
@@ -12,7 +12,17 @@ function Counter({ name, count, increase, decrease, reset }) {
         <button type='button' className='btn' onClick={decrease}>
           decrease
         </button>
-        <button type='button' className='btn' onClick={reset}>
+        <button
+          type='button'
+          className='btn'
+          onClick={() => {
+            reset();
+            modalOpen(
+              'susan',
+              '     Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus, libero reiciendis. Veritatis iure accusantium obcaecati nostrum voluptas, rem minus nisi.'
+            );
+          }}
+        >
           reset
         </button>
         <button type='button' className='btn' onClick={increase}>
@@ -25,20 +35,10 @@ function Counter({ name, count, increase, decrease, reset }) {
 function mapStateToProps({ countState: { count, name } }) {
   return { count: count, name: name };
 }
-function mapDispatchToProps(dispatch, ownProps) {
-  return {
-    increase: () => dispatch({ type: INCREASE }),
-    decrease: () => dispatch({ type: DECREASE }),
-    reset: () => {
-      dispatch({ type: RESET });
-      dispatch({
-        type: MODAL_OPEN,
-        payload: {
-          name: 'susan',
-          text: '      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ducimus, libero reiciendis. Veritatis iure accusantium obcaecati nostrum voluptas, rem minus nisi.',
-        },
-      });
-    },
-  };
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+
+export default connect(mapStateToProps, {
+  increase,
+  reset,
+  decrease,
+  modalOpen,
+})(Counter);
